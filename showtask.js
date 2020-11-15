@@ -6,6 +6,7 @@ function showTask(index){ // displays task from tasks array
 
     var section = document.createElement("div")
     section.setAttribute('class', 'w3-panel button')
+    section.id = "TaskSection" + index
     var inside = document.createElement("div")
     inside.setAttribute('id', 'Task' + index)
     var title = document.createElement("h3")
@@ -56,7 +57,6 @@ function openTaskInModal(index){ // displays editor for selected task
     $('#modalTask').show()
 }
 
-
 window.onclick = function(e) { // hide modal and save when clicked outside box
     if(e.target.id == "modalTask"){
         $('#modalTask').hide()
@@ -73,4 +73,17 @@ window.onclick = function(e) { // hide modal and save when clicked outside box
 
 function reorder(){
 
+}
+
+function setcolor(id){
+    const task = tasks[id]
+    var color = 'black'
+
+    if(task.done){
+        color = 'rgb(200, 200, 200)'
+    } else if(task.pinned){
+        color = 'rgba(21, 116, 34, 1)'
+    }
+
+    $('#TaskSection' + id).css('background-color', color)
 }

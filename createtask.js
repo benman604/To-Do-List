@@ -59,6 +59,7 @@ $(function(){
         if(tasks[id].done && tasks[id].pinned){
             tasks[id].pinned = false
         }
+        setcolor(id)
         localStorage.setItem("tasks", JSON.stringify(tasks))
     })
 
@@ -68,6 +69,7 @@ $(function(){
         if(tasks[id].done && tasks[id].pinned){
             tasks[id].done = false
         }
+        setcolor(id)
         localStorage.setItem("tasks", JSON.stringify(tasks))
     })
 })
