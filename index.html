@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+    <link rel = "stylesheet" href = "https://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.3/dist/wickedpicker.min.js"></script>
+</head>
+<body>
+    <div class="content">
+        <div class="w3-cell-row">
+            
+            <!-- Left Menu -->
+            <div class="w3-container w3-cell left">
+                <h1>Todo</h1>
+                <h3>Create task</h3>
+
+                <form action="#" id="create">
+                    <input class="full w3-input w3-animate-input" type="text" placeholder="Title" id="name">
+                    <input class="full w3-input w3-animate-input" type="text" id="datepicker" placeholder="Due date (Optional)">
+                    
+                    <select class="full w3-select" id="category">
+                        <option value="Uncatagorized">Category</option>
+                        <option value="Homework">Homework</option>
+                        <option value="Test">Test</option>
+                        <option value="Club">Club</option>
+                        <option value="Birthday">Birthday</option>
+                        <option value="Event">Event</option>
+                        <option onclick="editCatagories()">Edit Catagories</option>
+                    </select>
+
+                    <br><br>
+                    <textarea class="full w3-input" name="Description" id="desc" placeholder="Description (Optional)"></textarea>
+
+                    <br>
+                    <input class="button" type="submit" value="Add"></input>
+                </form>
+            </div>
+
+            <!-- Right section -->
+            <div class="w3-container w3-cell right">
+
+                <!-- Sorting options -->
+                <div class="w3-container">
+                    <p>Sort by <select>
+                        <option>Due date</option>
+                        <option>Assign date</option>
+                    </select> Show <select>
+                        <option>All</option>
+                        <option>Unfinished</option>
+                        <option>Finished</option>
+                    </select></p> 
+                </div>
+
+                <!-- All notes -->
+                <div id="list">
+                    <div class="w3-panel button" id="example">
+                        <button class="x x1">🖈</button>
+                        <button class="x x2">✔</button>
+                        <p>Create your first task to get started!</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Task view modal popup -->
+        <div class="w3-modal" id="modalTask">
+            <div class="shadow w3-panel w3-modal-content w3-animate-top" id="taskPopupBody" style="background-color: rgb(51, 51, 51);">
+                <input id="taskPopupTitle" class="full w3-input white large"></input>
+                <p id="taskPopupDuetext" class="full white"></p> <br>
+                <textarea id="taskPopupDesc" class="full w3-input white"></textarea> <br>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="class.js"></script>
+    <script type="text/javascript" src="showtask.js"></script>
+    <script type="text/javascript" src="createtask.js"></script>
+</body>
+</html>
