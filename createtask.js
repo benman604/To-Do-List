@@ -6,10 +6,15 @@ $(function(){
         for(var i=0; i < savedtasks.length; i++){
             var newtask = new Task(savedtasks[i].title, savedtasks[i].description, savedtasks[i].category, savedtasks[i].due, savedtasks[i].done, savedtasks[i].pinned)
             tasks.push(newtask)
-            showTask(i)
+            //showTask(i)
         }
 
         $('#example').hide()
+
+        tasks = reorder()
+        for(var i=0; i < tasks.length; i++){
+            showTask(i)
+        }
     }
 
     var duedate
@@ -72,4 +77,57 @@ $(function(){
         setcolor(id)
         localStorage.setItem("tasks", JSON.stringify(tasks))
     })
+
+    function reorder(){
+        var pinnedTasksPos = []
+        var pinnedTasksNeg = []
+        var regularTasksPos = []
+        var regularTasksNeg = []
+        var finishedTasksPos = []
+        var finishedTasksNeg = []
+        
+        for (e=0; e<tasks.length; e++){
+            let i = tasks[e]
+            console.log(i)
+            if(i.pinned){
+                if(i.dueDaysDiff >= 0) {
+                    pinnedTasksPos.push(i)
+                } else{
+                    pinnedTasksNeg.push(i)
+                }
+            } else if(i.done){
+                if(i.dueDaysDiff >= 0) {
+                    finishedTasksPos.push(i)
+                } else{
+                    finishedTasksNeg.push(i)
+                }
+            } else{
+                if(i.dueDaysDiff >= 0) {
+                    regularTasksPos.push(i)
+                } else{
+                    regularTasksNeg.push(i)
+                }
+            }
+        }
+    
+        pinnedTasksPos.sort(compare)
+        pinnedTasksNeg.sort(compare).reverse()
+        regularTasksPos.sort(compare)
+        regularTasksNeg.sort(compare).reverse()
+        finishedTasksPos.sort(compare)
+        finishedTasksNeg.sort(compare).reverse()
+    
+        var newarr = [...pinnedTasksPos, ...pinnedTasksNeg, ...regularTasksPos, ...regularTasksNeg, ...finishedTasksPos, ...finishedTasksNeg]
+        return(newarr.reverse())
+    }
+
+    function compare(a, b){
+        if(a.dueDaysDiff < b.dueDaysDiff){
+            return -1
+        }
+        if(a.dueDaysDiff > b.dueDaysDiff){
+            return 1
+        }
+        return 0
+    }
 })

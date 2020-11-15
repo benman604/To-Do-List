@@ -24,14 +24,6 @@ function showTask(index){ // displays task from tasks array
     pinbtn.id = "pinbtn" + index
     pinbtn.setAttribute('class', 'x x2')
 
-    if(task.done){
-        section.setAttribute('style', 'background-color: rgb(50, 50, 50)')
-    }
-
-    if(task.pinned){
-        section.setAttribute('style', 'background-color: rgba(21, 116, 34, 1)')
-    }
-
     inside.addEventListener('click', (e) => { // open and update on click 
         openTaskInModal(index)
         currentActiveTaskIndex = index
@@ -45,6 +37,8 @@ function showTask(index){ // displays task from tasks array
     section.appendChild(inside)
     section.appendChild(pinbtn)
     document.getElementById('list').prepend(section)
+
+    setcolor(index)
 }
 
 function openTaskInModal(index){ // displays editor for selected task
@@ -69,10 +63,6 @@ window.onclick = function(e) { // hide modal and save when clicked outside box
 
         localStorage.setItem("tasks", JSON.stringify(tasks))
     }
-}
-
-function reorder(){
-
 }
 
 function setcolor(id){

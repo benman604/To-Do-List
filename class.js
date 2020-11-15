@@ -9,6 +9,12 @@ class Task{ // class for each task
         this.due = due
         this.done = done
         this.pinned = pinned
+
+        if(this.due != undefined){
+            this.dueDaysDiff = this.getDueDaysDiff()
+        } else{
+            this.dueDaysDiff = -Infinity
+        }
     }
 
     getDueDaysDiff(){ // returns difference in days from due date
@@ -57,8 +63,8 @@ class Task{ // class for each task
         }
 
         var dayofweek = daysofweek[this.due.dayofweek]
-
         result += " (" + dayofweek + " " + this.due.month + "/" + this.due.day + "/" + this.due.year + ")"
+
         if(this.category != "Uncatagorized"){
             result += " " + this.category
         }
