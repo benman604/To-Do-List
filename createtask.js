@@ -11,7 +11,7 @@ $(function(){
 
         $('#example').hide()
 
-        tasks = reorder()
+        tasks = reorder2()
         for(var i=0; i < tasks.length; i++){
             showTask(i)
         }
@@ -55,79 +55,11 @@ $(function(){
 
             showTask(tasks.length - 1) // display newly created task
             localStorage.setItem("tasks", JSON.stringify(tasks))
-        }
-    })
-
-    $('.x1').click(function(e){  // toggle task done/checked
-        var id = (e.currentTarget.id.charAt(e.currentTarget.id.length - 1))
-        tasks[id].done = !tasks[id].done
-        if(tasks[id].done && tasks[id].pinned){
-            tasks[id].pinned = false
-        }
-        setcolor(id)
-        localStorage.setItem("tasks", JSON.stringify(tasks))
-    })
-
-    $('.x2').click(function(e){ // toggle task pinned
-        var id = (e.currentTarget.id.charAt(e.currentTarget.id.length - 1))
-        tasks[id].pinned = !tasks[id].pinned
-        if(tasks[id].done && tasks[id].pinned){
-            tasks[id].done = false
-        }
-        setcolor(id)
-        localStorage.setItem("tasks", JSON.stringify(tasks))
-    })
-
-    function reorder(){
-        var pinnedTasksPos = []
-        var pinnedTasksNeg = []
-        var regularTasksPos = []
-        var regularTasksNeg = []
-        var finishedTasksPos = []
-        var finishedTasksNeg = []
-        
-        for (e=0; e<tasks.length; e++){
-            let i = tasks[e]
-            console.log(i)
-            if(i.pinned){
-                if(i.dueDaysDiff >= 0) {
-                    pinnedTasksPos.push(i)
-                } else{
-                    pinnedTasksNeg.push(i)
-                }
-            } else if(i.done){
-                if(i.dueDaysDiff >= 0) {
-                    finishedTasksPos.push(i)
-                } else{
-                    finishedTasksNeg.push(i)
-                }
-            } else{
-                if(i.dueDaysDiff >= 0) {
-                    regularTasksPos.push(i)
-                } else{
-                    regularTasksNeg.push(i)
-                }
+            $('#list').empty()
+            tasks = reorder()
+            for(var i=0; i < tasks.length; i++){
+                showTask(i)
             }
         }
-    
-        pinnedTasksPos.sort(compare)
-        pinnedTasksNeg.sort(compare).reverse()
-        regularTasksPos.sort(compare)
-        regularTasksNeg.sort(compare).reverse()
-        finishedTasksPos.sort(compare)
-        finishedTasksNeg.sort(compare).reverse()
-    
-        var newarr = [...pinnedTasksPos, ...pinnedTasksNeg, ...regularTasksPos, ...regularTasksNeg, ...finishedTasksPos, ...finishedTasksNeg]
-        return(newarr.reverse())
-    }
-
-    function compare(a, b){
-        if(a.dueDaysDiff < b.dueDaysDiff){
-            return -1
-        }
-        if(a.dueDaysDiff > b.dueDaysDiff){
-            return 1
-        }
-        return 0
-    }
+    })
 })
