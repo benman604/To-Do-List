@@ -1,4 +1,4 @@
-var tasks = [] // array holding every task
+var tasks = []
 const daysofweek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
 class Task{ // class for each task
@@ -15,6 +15,10 @@ class Task{ // class for each task
         } else{
             this.dueDaysDiff = -Infinity
         }
+    }
+
+    setCreateDate(){
+        this.createdate = Date.now()
     }
 
     getDueDaysDiff(){ // returns difference in days from due date
@@ -71,3 +75,4 @@ class Task{ // class for each task
         return result
     }
 }
+

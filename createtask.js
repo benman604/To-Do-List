@@ -5,8 +5,8 @@ $(function(){
     if(savedtasks != null){
         for(var i=0; i < savedtasks.length; i++){
             var newtask = new Task(savedtasks[i].title, savedtasks[i].description, savedtasks[i].category, savedtasks[i].due, savedtasks[i].done, savedtasks[i].pinned)
+            newtask.createdate = savedtasks[i].createdate
             tasks.push(newtask)
-            //showTask(i)
         }
 
         $('#example').hide()
@@ -36,6 +36,10 @@ $(function(){
         }
     })
 
+    $('#sortby').on('change', function(e){ // on sorting method change
+        reloadList()
+    })
+
     $("#create").submit(function(e) { // on task create form submit
         e.preventDefault()
 
@@ -45,6 +49,7 @@ $(function(){
 
         if($('#name').val() != "" || $('#desc').val() != ""){
             var newtask = new Task($("#name").val(), $("#desc").val(), $("#category").val(), duedate) // create task
+            newtask.setCreateDate()
             tasks.push(newtask) 
 
             // clear input and example
@@ -55,11 +60,7 @@ $(function(){
 
             showTask(tasks.length - 1) // display newly created task
             localStorage.setItem("tasks", JSON.stringify(tasks))
-            $('#list').empty()
-            tasks = reorder()
-            for(var i=0; i < tasks.length; i++){
-                showTask(i)
-            }
+            reloadList()
         }
     })
 })

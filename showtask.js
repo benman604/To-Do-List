@@ -18,11 +18,17 @@ function showTask(index){ // displays task from tasks array
     var xbtn = document.createElement('button')
     xbtn.innerHTML = "✔"
     xbtn.id = "xbtn" + index
+    xbtn.title = "Mark as done"
     xbtn.setAttribute('class', 'x x1')
     var pinbtn = document.createElement('button')
     pinbtn.innerHTML = "🖈"
     pinbtn.id = "pinbtn" + index
+    pinbtn.title = "Pin"
     pinbtn.setAttribute('class', 'x x2')
+    var openbtn = document.createElement('button')
+    openbtn.title = "Open and edit"
+    openbtn.innerHTML = "☰"
+    openbtn.setAttribute('class', 'x x3')
 
     inside.addEventListener('click', (e) => { // open and update on click 
         openTaskInModal(index)
@@ -31,46 +37,59 @@ function showTask(index){ // displays task from tasks array
     })
 
     xbtn.addEventListener('click', (e) => {  // toggle task done/checked
-        var id = (e.currentTarget.id.charAt(e.currentTarget.id.length - 1))
+        let id = (e.currentTarget.id.charAt(e.currentTarget.id.length - 1))
         tasks[id].done = !tasks[id].done
         if(tasks[id].done && tasks[id].pinned){
             tasks[id].pinned = false
         }
         setcolor(id)
         localStorage.setItem("tasks", JSON.stringify(tasks))
-
-        $('#list').empty()
-        tasks = reorder2()
-        for(var i=0; i < tasks.length; i++){
-            showTask(i)
-        }
+        reloadList()
     })
 
     pinbtn.addEventListener('click', (e) => { // toggle task pinned
-        var id = (e.currentTarget.id.charAt(e.currentTarget.id.length - 1))
+        let id = (e.currentTarget.id.charAt(e.currentTarget.id.length - 1))
         tasks[id].pinned = !tasks[id].pinned
         if(tasks[id].done && tasks[id].pinned){
             tasks[id].done = false
         }
         setcolor(id)
         localStorage.setItem("tasks", JSON.stringify(tasks))
-
-        $('#list').empty()
-        tasks = reorder2()
-        for(var i=0; i < tasks.length; i++){
-            showTask(i)
-        }
+        reloadList()
     })
 
     section.appendChild(xbtn)
     inside.appendChild(title)
     inside.appendChild(duetext)
     inside.appendChild(content)
+    inside.appendChild(openbtn)
     section.appendChild(inside)
     section.appendChild(pinbtn)
     document.getElementById('list').prepend(section)
     setcolor(index)
 }
+
+var taskPopupDuedate
+
+$("#taskPopupDatepicker").datepicker({
+    dateFormat: 'yy-m-d',
+    inline: true,
+
+    onSelect: function(dateText, inst) { // update duedate on change
+        var date = $(this).datepicker('getDate')
+        
+        taskPopupDuedate = {
+            day: date.getDate(),
+            month: date.getMonth() + 1,
+            year: date.getFullYear(),
+            dayofweek: date.getUTCDay(),
+            dateobj: date
+        }
+
+        currentActiveTask.due = taskPopupDuedate
+        $('#taskPopupDuetext').text(currentActiveTask.getDueText())
+    }
+})
 
 function openTaskInModal(index){ // displays editor for selected task
     const task = tasks[index]
@@ -78,6 +97,12 @@ function openTaskInModal(index){ // displays editor for selected task
     $('#taskPopupTitle').val(task.title)
     $('#taskPopupDuetext').text(task.getDueText())
     $('#taskPopupDesc').val(task.description)
+
+    if(task.due != undefined){
+        $('#taskPopupDatepicker').val(task.due.year + "-" + task.due.month + "-" + task.due.day)
+    } else{
+        $('#taskPopupDatepicker').val("")
+    }
 
     $('#modalTask').show()
 }
@@ -92,11 +117,19 @@ window.onclick = function(e) { // hide modal and save when clicked outside box
         currentActiveTask.description = $('#taskPopupDesc').val()
         $('#Task' + currentActiveTaskIndex).children()[2].innerText = currentActiveTask.description.slice(0, 100)
 
+        $('#Task' + currentActiveTaskIndex).children()[1].innerText = currentActiveTask.getDueText()
+
+        reloadList()
         localStorage.setItem("tasks", JSON.stringify(tasks))
+    }
+
+    if(e.target.id == "modalCategory"){
+        $('#modalCategory').hide()
+        saveCategories()
     }
 }
 
-function setcolor(id){
+function setcolor(id){ // sets color of task according to if pinned or checked off
     const task = tasks[id]
     var color = 'black'
 
@@ -107,57 +140,4 @@ function setcolor(id){
     }
 
     $('#TaskSection' + id).css('background-color', color)
-}
-
-function reorder2(){
-    var pinnedTasksPos = []
-    var pinnedTasksNeg = []
-    var regularTasksPos = []
-    var regularTasksNeg = []
-    var finishedTasksPos = []
-    var finishedTasksNeg = []
-    
-    for (e=0; e<tasks.length; e++){
-        let i = tasks[e]
-        console.log(i)
-        if(i.pinned){
-            if(i.dueDaysDiff >= 0) {
-                pinnedTasksPos.push(i)
-            } else{
-                pinnedTasksNeg.push(i)
-            }
-        } else if(i.done){
-            if(i.dueDaysDiff >= 0) {
-                finishedTasksPos.push(i)
-            } else{
-                finishedTasksNeg.push(i)
-            }
-        } else{
-            if(i.dueDaysDiff >= 0) {
-                regularTasksPos.push(i)
-            } else{
-                regularTasksNeg.push(i)
-            }
-        }
-    }
-
-    pinnedTasksPos.sort(compare2)
-    pinnedTasksNeg.sort(compare2).reverse()
-    regularTasksPos.sort(compare2)
-    regularTasksNeg.sort(compare2).reverse()
-    finishedTasksPos.sort(compare2)
-    finishedTasksNeg.sort(compare2).reverse()
-
-    var newarr = [...pinnedTasksPos, ...pinnedTasksNeg, ...regularTasksPos, ...regularTasksNeg, ...finishedTasksPos, ...finishedTasksNeg]
-    return(newarr.reverse())
-}
-
-function compare2(a, b){
-    if(a.dueDaysDiff < b.dueDaysDiff){
-        return -1
-    }
-    if(a.dueDaysDiff > b.dueDaysDiff){
-        return 1
-    }
-    return 0
 }

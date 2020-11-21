@@ -68,7 +68,6 @@ input, textarea{
     border: none;
     background: rgb(66, 66, 66);
     color: rgb(214, 214, 214);
-    left: -10px;
     display: none;
     z-index: 10;
     font-size: 20px;
@@ -79,9 +78,21 @@ input, textarea{
 }
 
 .x1{
+    left: -10px;
     top: -10px;
 }
 
 .x2{
+    left: -10px;
     bottom: -10px;
+}
+
+.x3{
+    right: -10px;
+    top: -10px;
+}
+
+.select{
+    border: none;
+    font-weight: bold;
 }

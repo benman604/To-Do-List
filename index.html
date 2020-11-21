@@ -23,21 +23,21 @@
                 <form action="#" id="create">
                     <input class="full w3-input w3-animate-input" type="text" placeholder="Title" id="name">
                     <input class="full w3-input w3-animate-input" type="text" id="datepicker" placeholder="Due date (Optional)">
-                    
+                    <textarea class="full w3-input" name="Description" id="desc" placeholder="Description (Optional)"></textarea>
+
                     <select class="full w3-select" id="category">
-                        <option value="Uncatagorized">Category</option>
+                        <option value="Uncatagorized">Uncatagorized</option>
                         <option value="Homework">Homework</option>
                         <option value="Test">Test</option>
                         <option value="Club">Club</option>
                         <option value="Birthday">Birthday</option>
                         <option value="Event">Event</option>
-                        <option onclick="editCatagories()">Edit Catagories</option>
                     </select>
 
-                    <br><br>
-                    <textarea class="full w3-input" name="Description" id="desc" placeholder="Description (Optional)"></textarea>
-
                     <br>
+                    <a href="javascript:editCategories()" style="font-size: smaller;color: rgba(0,0,0,0.4); text-align: center;">Edit Categories</a>
+
+                    <br><br>
                     <input class="button" type="submit" value="Add"></input>
                 </form>
             </div>
@@ -47,10 +47,10 @@
 
                 <!-- Sorting options -->
                 <div class="w3-container">
-                    <p>Sort by <select>
-                        <option>Due date</option>
-                        <option>Assign date</option>
-                    </select> Show <select>
+                    <p>Sort by <select id="sortby" class="select">
+                        <option value='due'>Relevance</option>
+                        <option value='assign'>Date created</option>
+                    </select> Show <select id="show" class="select">
                         <option>All</option>
                         <option>Unfinished</option>
                         <option>Finished</option>
@@ -73,13 +73,24 @@
         <div class="w3-modal" id="modalTask">
             <div class="shadow w3-panel w3-modal-content w3-animate-top" id="taskPopupBody" style="background-color: rgb(51, 51, 51);">
                 <input id="taskPopupTitle" class="full w3-input white large"></input>
-                <p id="taskPopupDuetext" class="full white"></p> <br>
-                <textarea id="taskPopupDesc" class="full w3-input white"></textarea> <br>
+                <input class="full w3-input white" type="text" id="taskPopupDatepicker" placeholder="Due date (Optional)">
+                <p id="taskPopupDuetext" class="full white"></p>
+                <textarea id="taskPopupDesc" class="full w3-input white" rows="8"></textarea> <br>
+            </div>
+        </div>
+
+        <!-- Category editor modal popup -->
+        <div class="w3-modal" id="modalCategory">
+            <div class="shadow w3-panel w3-modal-content w3-animate-top" style="background-color: rgb(51, 51, 51);">
+                <p>Edit categories with each new line representing a new category. Change the content of a line to change the name of an existing category.</p>
+                <textarea id="categories" class="full w3-input white" rows="10"></textarea> <br>
             </div>
         </div>
     </div>
 
     <script type="text/javascript" src="class.js"></script>
+    <script type="text/javascript" src="sort.js"></script>
+    <script type="text/javascript" src="categories.js"></script>
     <script type="text/javascript" src="showtask.js"></script>
     <script type="text/javascript" src="createtask.js"></script>
 </body>
