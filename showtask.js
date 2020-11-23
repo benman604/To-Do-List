@@ -12,7 +12,7 @@ function showTask(index){ // displays task from tasks array
     var title = document.createElement("h3")
     title.innerText = task.title.slice(0, 50)
     var content = document.createElement('p')
-    content.innerText = task.description.slice(0, 100)
+    content.innerHTML = task.description.slice(0, 100)
     var duetext = document.createElement('p')
     duetext.innerText = task.getDueText()
     var xbtn = document.createElement('button')
@@ -37,7 +37,8 @@ function showTask(index){ // displays task from tasks array
     })
 
     xbtn.addEventListener('click', (e) => {  // toggle task done/checked
-        let id = (e.currentTarget.id.charAt(e.currentTarget.id.length - 1))
+        //const id = (e.currentTarget.id.charAt(e.currentTarget.id.length - 1))
+        const id = index
         tasks[id].done = !tasks[id].done
         if(tasks[id].done && tasks[id].pinned){
             tasks[id].pinned = false
@@ -48,7 +49,8 @@ function showTask(index){ // displays task from tasks array
     })
 
     pinbtn.addEventListener('click', (e) => { // toggle task pinned
-        let id = (e.currentTarget.id.charAt(e.currentTarget.id.length - 1))
+        //const id = (e.currentTarget.id.charAt(e.currentTarget.id.length - 1))
+        const id = index
         tasks[id].pinned = !tasks[id].pinned
         if(tasks[id].done && tasks[id].pinned){
             tasks[id].done = false
@@ -91,6 +93,16 @@ $("#taskPopupDatepicker").datepicker({
     }
 })
 
+function deleteCurrentTask(){
+    const index = tasks.indexOf(currentActiveTask)
+    if (index > -1) {
+        tasks.splice(index, 1);
+    }
+    hideTaskModal()
+    reloadList()
+    localStorage.setItem("tasks", JSON.stringify(tasks))
+}
+
 function openTaskInModal(index){ // displays editor for selected task
     const task = tasks[index]
 
@@ -109,24 +121,32 @@ function openTaskInModal(index){ // displays editor for selected task
 
 window.onclick = function(e) { // hide modal and save when clicked outside box
     if(e.target.id == "modalTask"){
-        $('#modalTask').hide()
-
-        currentActiveTask.title = $('#taskPopupTitle').val()
-        $('#Task' + currentActiveTaskIndex).children()[0].innerText = currentActiveTask.title.slice(0, 50)
-
-        currentActiveTask.description = $('#taskPopupDesc').val()
-        $('#Task' + currentActiveTaskIndex).children()[2].innerText = currentActiveTask.description.slice(0, 100)
-
-        $('#Task' + currentActiveTaskIndex).children()[1].innerText = currentActiveTask.getDueText()
-
-        reloadList()
-        localStorage.setItem("tasks", JSON.stringify(tasks))
+        hideTaskModal()
     }
 
     if(e.target.id == "modalCategory"){
-        $('#modalCategory').hide()
-        saveCategories()
+        hideCategoryModal()
     }
+}
+
+function hideTaskModal(){
+    $('#modalTask').hide()
+
+    currentActiveTask.title = $('#taskPopupTitle').val()
+    $('#Task' + currentActiveTaskIndex).children()[0].innerText = currentActiveTask.title.slice(0, 50)
+
+    currentActiveTask.description = $('#taskPopupDesc').val()
+    $('#Task' + currentActiveTaskIndex).children()[2].innerText = currentActiveTask.description.slice(0, 100)
+
+    $('#Task' + currentActiveTaskIndex).children()[1].innerText = currentActiveTask.getDueText()
+
+    reloadList()
+    localStorage.setItem("tasks", JSON.stringify(tasks))
+}
+
+function hideCategoryModal(){
+    $('#modalCategory').hide()
+    saveCategories()
 }
 
 function setcolor(id){ // sets color of task according to if pinned or checked off

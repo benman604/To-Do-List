@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo</title>
+    <link rel="icon" href="favicon.png">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet">
     <link rel = "stylesheet" href = "https://www.w3schools.com/lib/w3.css">
@@ -10,6 +11,11 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.3/dist/wickedpicker.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
 </head>
 <body>
     <div class="content">
@@ -17,13 +23,13 @@
             
             <!-- Left Menu -->
             <div class="w3-container w3-cell left">
-                <h1>Todo</h1>
-                <h3>Create task</h3>
+                <h1 style="text-align: center;"><img src="todo-logo.png" width="50%"></h1>
 
                 <form action="#" id="create">
+                    <h3>Create task</h3>
                     <input class="full w3-input w3-animate-input" type="text" placeholder="Title" id="name">
                     <input class="full w3-input w3-animate-input" type="text" id="datepicker" placeholder="Due date (Optional)">
-                    <textarea class="full w3-input" name="Description" id="desc" placeholder="Description (Optional)"></textarea>
+                    <textarea class="full w3-input" name="Description" id="desc" placeholder="Description (Optional, HTML allowed)"></textarea>
 
                     <select class="full w3-select" id="category">
                         <option value="Uncatagorized">Uncatagorized</option>
@@ -32,9 +38,8 @@
                         <option value="Club">Club</option>
                         <option value="Birthday">Birthday</option>
                         <option value="Event">Event</option>
-                    </select>
+                    </select> <br>
 
-                    <br>
                     <a href="javascript:editCategories()" style="font-size: smaller;color: rgba(0,0,0,0.4); text-align: center;">Edit Categories</a>
 
                     <br><br>
@@ -45,26 +50,54 @@
             <!-- Right section -->
             <div class="w3-container w3-cell right">
 
-                <!-- Sorting options -->
-                <div class="w3-container">
-                    <p>Sort by <select id="sortby" class="select">
-                        <option value='due'>Relevance</option>
-                        <option value='assign'>Date created</option>
-                    </select> Show <select id="show" class="select">
-                        <option>All</option>
-                        <option>Unfinished</option>
-                        <option>Finished</option>
-                    </select></p> 
+                <div class="w3-row">
+                    <!-- Sorting options -->
+                    <div class="w3-container w3-half">
+                        <p>Sort by <select id="sortby" class="select">
+                            <option value='due'>Relevance</option>
+                            <option value='assign'>Date created</option>
+                        </select> Show <select id="show" class="select">
+                            <option>All</option>
+                            <option>Unfinished</option>
+                            <option>Finished</option>
+                        </select></p> 
+                    </div>
+
+                    <!-- Sign in options -->
+                    <div class="w3-half w3-container" style="text-align: right; margin-top: 10px;">
+                        <img id='pfp' src="user-defualt.webp" style="border-radius: 180px; height: 50px; float: right; margin-top: -5px;">
+                        <div class="signedin" style="display:none">
+                            <p style="float: right; margin-right: 10px; margin-top: 5px;" id="uname">Welcome, Ben!   </p>
+                            <button class="w3-btn" style="border-radius: 10px; float: right; margin-right: 10px;" onclick="signout()">Logout</button>
+                        </div>
+                        <div class="signedout" style="display: block">
+                            <button class="w3-btn" style="border-radius: 10px; float: right; margin-right: 10px;" onclick="signin()">Sign in</button>
+                            <button class="w3-btn" style="border-radius: 10px; float: right; margin-right: 10px;" onclick="signin()">Create Account</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- All notes -->
                 <div id="list">
-                    <div class="w3-panel button" id="example">
-                        <button class="x x1">🖈</button>
-                        <button class="x x2">✔</button>
-                        <p>Create your first task to get started!</p>
+                    <div id="example" style="text-align: center;">
+                        <div class="button">
+                            <h1>Welcome to <strong>your</strong> to do list</h1>
+                            <p>Getting started is simple:</p>
+                            1. <strong>Create</strong> an account<br>
+                            2. <strong>Add</strong> your first task <br>
+                            3. <strong>You're ready to go!</strong> <br>
+                            <p style="text-align: left;">Don't want to create an account? <br>
+                            <strong>Add a task</strong> without an account to use your to do list locally.</p>
+                        </div>
                     </div>
                 </div>
+
+                <div style="text-align: center;"> 
+                    <a href="https://github.com/benman604">By Benjamin Man</a>
+                     | 
+                    <a href="https://github.com/benman604/To-Do-List">Github</a>
+                </div>
+            </div>
 
             </div>
         </div>
@@ -76,18 +109,30 @@
                 <input class="full w3-input white" type="text" id="taskPopupDatepicker" placeholder="Due date (Optional)">
                 <p id="taskPopupDuetext" class="full white"></p>
                 <textarea id="taskPopupDesc" class="full w3-input white" rows="8"></textarea> <br>
+
+                <div class="w3-row">
+                    <div class="w3-half">
+                        <button class="w3-btn" style="border-radius: 10px;" onclick="hideTaskModal()">Close</button>
+                    </div>
+
+                    <div class="w3-half" style="text-align: right; color:rgba(255, 255, 255, 0.486)">
+                        <a href="javascript:deleteCurrentTask()">Delete</a>
+                    </div>
+                </div> <p></p>
             </div>
         </div>
 
         <!-- Category editor modal popup -->
         <div class="w3-modal" id="modalCategory">
             <div class="shadow w3-panel w3-modal-content w3-animate-top" style="background-color: rgb(51, 51, 51);">
-                <p>Edit categories with each new line representing a new category. Change the content of a line to change the name of an existing category.</p>
-                <textarea id="categories" class="full w3-input white" rows="10"></textarea> <br>
+                <p>Edit categories with each new line representing a new category.</p>
+                <textarea id="categories" class="full w3-input white" rows="10"></textarea> <p></p>
+                <button class="w3-btn" style="border-radius: 10px;" onclick="hideCategoryModal()">Close</button> <p></p>
             </div>
         </div>
     </div>
 
+    <script type="text/javascript" src="storage.js"></script>
     <script type="text/javascript" src="class.js"></script>
     <script type="text/javascript" src="sort.js"></script>
     <script type="text/javascript" src="categories.js"></script>

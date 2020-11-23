@@ -70,7 +70,7 @@ class Task{ // class for each task
         result += " (" + dayofweek + " " + this.due.month + "/" + this.due.day + "/" + this.due.year + ")"
 
         if(this.category != "Uncatagorized"){
-            result += " " + this.category
+            result += "\n" + this.category
         }
         return result
     }
