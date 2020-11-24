@@ -44,7 +44,8 @@ function showTask(index){ // displays task from tasks array
             tasks[id].pinned = false
         }
         setcolor(id)
-        localStorage.setItem("tasks", JSON.stringify(tasks))
+        //localStorage.setItem("tasks", JSON.stringify(tasks))
+        storeTodoData("tasks", JSON.stringify(tasks))
         reloadList()
     })
 
@@ -56,7 +57,8 @@ function showTask(index){ // displays task from tasks array
             tasks[id].done = false
         }
         setcolor(id)
-        localStorage.setItem("tasks", JSON.stringify(tasks))
+        //localStorage.setItem("tasks", JSON.stringify(tasks))
+        storeTodoData("tasks", JSON.stringify(tasks))
         reloadList()
     })
 
@@ -100,7 +102,8 @@ function deleteCurrentTask(){
     }
     hideTaskModal()
     reloadList()
-    localStorage.setItem("tasks", JSON.stringify(tasks))
+    //localStorage.setItem("tasks", JSON.stringify(tasks))
+    storeTodoData("tasks", JSON.stringify(tasks))
 }
 
 function openTaskInModal(index){ // displays editor for selected task
@@ -141,7 +144,8 @@ function hideTaskModal(){
     $('#Task' + currentActiveTaskIndex).children()[1].innerText = currentActiveTask.getDueText()
 
     reloadList()
-    localStorage.setItem("tasks", JSON.stringify(tasks))
+    //localStorage.setItem("tasks", JSON.stringify(tasks))
+    storeTodoData("tasks", JSON.stringify(tasks))
 }
 
 function hideCategoryModal(){

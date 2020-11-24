@@ -50,8 +50,10 @@ function saveCategories(){
             categories[j] = lines[j]
         }
     }
-    updateCategories()
+    //updateCategories()
     localStorage.setItem("categories", JSON.stringify(categories))
+    storeTodoData("categories", JSON.stringify(lines))
+    updateCategories()
 }
 
 updateCategories()

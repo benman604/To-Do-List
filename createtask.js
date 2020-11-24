@@ -10,6 +10,7 @@ $(function(){
         }
 
         $('#example').hide()
+        $('#signin-promo').show()
 
         tasks = reorder2()
         for(var i=0; i < tasks.length; i++){
@@ -59,7 +60,8 @@ $(function(){
             $('#example').hide()
 
             showTask(tasks.length - 1) // display newly created task
-            localStorage.setItem("tasks", JSON.stringify(tasks))
+            //localStorage.setItem("tasks", JSON.stringify(tasks))
+            storeTodoData("tasks", JSON.stringify(tasks))
             reloadList()
         }
     })
