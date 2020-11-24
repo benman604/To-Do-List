@@ -112,6 +112,7 @@ function openTaskInModal(index){ // displays editor for selected task
     $('#taskPopupTitle').val(task.title)
     $('#taskPopupDuetext').text(task.getDueText())
     $('#taskPopupDesc').val(task.description)
+    $('#taskPopupCategory').val(task.category)
 
     if(task.due != undefined){
         $('#taskPopupDatepicker').val(task.due.year + "-" + task.due.month + "-" + task.due.day)
@@ -140,6 +141,8 @@ function hideTaskModal(){
 
     currentActiveTask.description = $('#taskPopupDesc').val()
     $('#Task' + currentActiveTaskIndex).children()[2].innerText = currentActiveTask.description.slice(0, 100)
+
+    currentActiveTask.category = $('#taskPopupCategory').val()
 
     $('#Task' + currentActiveTaskIndex).children()[1].innerText = currentActiveTask.getDueText()
 

@@ -31,7 +31,11 @@ input, textarea{
 }
 
 .white{
-    color: white;
+    color: white !important;
+}
+
+.categorypopup{
+    background-color: rgb(51, 51, 51) !important;
 }
 
 .large{

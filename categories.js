@@ -28,8 +28,10 @@ function updateCategories(){
 
     for(i of categoriesListOptions){
         const a = i.cloneNode(true)
+        const b = i.cloneNode(true)
         $('#category').append(i)
         $('#show').append(a)
+        $('#taskPopupCategory').append(b)
     }
 }
 
