@@ -12,7 +12,7 @@ function showTask(index){ // displays task from tasks array
     var title = document.createElement("h3")
     title.innerText = task.title.slice(0, 50)
     var content = document.createElement('p')
-    content.innerHTML = task.description.slice(0, 100)
+    content.innerText = task.description.slice(0, 100)
     var duetext = document.createElement('p')
     duetext.innerText = task.getDueText()
     var xbtn = document.createElement('button')

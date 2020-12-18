@@ -27,8 +27,8 @@
 
                 <form action="#" id="create">
                     <h3>Create task</h3>
-                    <input class="full w3-input w3-animate-input" type="text" placeholder="Title" id="name">
-                    <input class="full w3-input w3-animate-input" type="text" id="datepicker" placeholder="Due date (Optional)">
+                    <input class="full w3-input w3-animate-input" type="text" placeholder="Title" id="name" autocomplete="off">
+                    <input class="full w3-input w3-animate-input" type="text" id="datepicker" placeholder="Due date (Optional)" autocomplete="off">
                     <textarea class="full w3-input" name="Description" id="desc" placeholder="Description (Optional, HTML allowed)"></textarea>
 
                     <select class="full w3-select" id="category">
@@ -111,8 +111,8 @@
         <!-- Task view modal popup -->
         <div class="w3-modal" id="modalTask">
             <div class="shadow w3-panel w3-modal-content w3-animate-top" id="taskPopupBody" style="background-color: rgb(51, 51, 51);">
-                <input id="taskPopupTitle" class="full w3-input white large"></input>
-                <input class="full w3-input white" type="text" id="taskPopupDatepicker" placeholder="Due date (Optional)">
+                <input id="taskPopupTitle" class="full w3-input white large" autocomplete="off"></input>
+                <input class="full w3-input white" type="text" id="taskPopupDatepicker" placeholder="Due date (Optional)" autocomplete="off">
                 <select class="full w3-select white categorypopup" id="taskPopupCategory"></select>
                 <p id="taskPopupDuetext" class="full white"></p>
                 <textarea id="taskPopupDesc" class="full w3-input white" rows="8"></textarea> <br>
