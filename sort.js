@@ -68,6 +68,7 @@ function reorder2(){ // sorts tasks array accoring to relevance
     var newarr = [...pinnedTasksPos, ...pinnedTasksNeg, ...regularTasksPos, ...regularTasksNeg, ...finishedTasksPos, ...finishedTasksNeg]
     return(newarr.reverse())
 }
+
 function compare2(a, b){
     if(a.dueDaysDiff < b.dueDaysDiff){
         return -1
@@ -76,4 +77,33 @@ function compare2(a, b){
         return 1
     }
     return 0
+}
+
+function changeOrientation(e){
+    if(e == "left"){
+        $("#leftmenu").addClass("left").addClass("w3-cell")
+        $("#rightmenu").addClass("right").addClass("w3-cell")
+    } else{
+        $("#leftmenu").removeClass("left").removeClass("w3-cell")
+        $("#rightmenu").removeClass("right").removeClass("w3-cell")
+    }
+
+    $("#arrange").val(e)
+    localStorage.setItem("orientation", e)
+}
+
+$("#arrange").on('change', function(e){
+    changeOrientation($("#arrange").val())
+})
+
+const ua = navigator.userAgent
+if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+    changeOrientation('center')
+}
+else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    changeOrientation('center');
+}
+
+if(localStorage.getItem("orientation") != null){
+    changeOrientation(localStorage.getItem("orientation"))
 }

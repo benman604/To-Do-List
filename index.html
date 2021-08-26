@@ -16,39 +16,16 @@
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
+
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 </head>
 <body>
     <div class="content">
         <div class="w3-cell-row">
-            
-            <!-- Left Menu -->
-            <div class="w3-container w3-cell left">
-                <h1 style="text-align: center;"><img src="todo-logo.png" width="50%"></h1>
-
-                <form action="#" id="create">
-                    <h3>Create task</h3>
-                    <input class="full w3-input w3-animate-input" type="text" placeholder="Title" id="name" autocomplete="off">
-                    <input class="full w3-input w3-animate-input" type="text" id="datepicker" placeholder="Due date (Optional)" autocomplete="off">
-                    <textarea class="full w3-input" name="Description" id="desc" placeholder="Description (Optional, HTML allowed)"></textarea>
-
-                    <select class="full w3-select" id="category">
-                        <option value="Uncatagorized">Uncatagorized</option>
-                        <option value="Homework">Homework</option>
-                        <option value="Test">Test</option>
-                        <option value="Club">Club</option>
-                        <option value="Birthday">Birthday</option>
-                        <option value="Event">Event</option>
-                    </select> <br>
-
-                    <a href="javascript:editCategories()" style="font-size: smaller;color: rgba(0,0,0,0.4); text-align: center;">Edit Categories</a>
-
-                    <br><br>
-                    <input class="button" type="submit" value="Add"></input>
-                </form>
-            </div>
 
             <!-- Right section -->
-            <div class="w3-container w3-cell right">
+            <div class="w3-container w3-cell right" id="rightmenu">
 
                 <div class="w3-row">
                     <!-- Sorting options -->
@@ -60,6 +37,9 @@
                             <option>All</option>
                             <option>Unfinished</option>
                             <option>Finished</option>
+                        </select> Dock <select id="arrange" class="select">
+                            <option value="left" selected>Left</option>
+                            <option value="center">Center</option>
                         </select></p> 
                     </div>
 
@@ -68,17 +48,41 @@
                         <img id='pfp' src="user-defualt.webp" style="border-radius: 180px; height: 50px; float: right; margin-top: -5px;">
                         <div class="signedin" style="display:none">
                             <p style="float: right; margin-right: 10px; margin-top: 5px;" id="uname">Welcome, Ben!   </p>
-                            <button class="w3-btn" style="border-radius: 10px; float: right; margin-right: 10px;" onclick="signout()">Logout</button>
+                            <button class="w3-btn button-small" onclick="signout()">Logout</button>
                         </div>
                         <div class="signedout" style="display: block">
-                            <button class="w3-btn" style="border-radius: 10px; float: right; margin-right: 10px;" onclick="signin()">Sign in</button>
-                            <button class="w3-btn" style="border-radius: 10px; float: right; margin-right: 10px;" onclick="signin()">Create Account</button>
+                            <button class="w3-btn button-small" onclick="signin()">Sign in</button>
+                            <button class="w3-btn button-small" onclick="signin()">Create Account</button>
                         </div> <br><br>
 
                         <span id="signin-promo" style="display: none;"><b>Signing in with Google is easy</b> <br> Sign in to start syncing all your tasks to the cloud</span>
 
 
                     </div>
+                </div>
+
+                <!-- Left Menu -->
+                <div class="w3-container w3-cell left" id="leftmenu">
+
+                    <form action="#" id="create">
+                        <input class="full w3-input w3-animate-input" type="text" placeholder="Title" id="name" autocomplete="off">
+                        <input class="full w3-input w3-animate-input" type="text" id="datepicker" placeholder="Due date (Optional)" autocomplete="off">
+                        <textarea class="full w3-input" name="Description" id="desc" placeholder="Description (Optional)"></textarea>
+
+                        <select class="full w3-select" id="category">
+                            <option value="Uncatagorized">Uncatagorized</option>
+                            <option value="Homework">Homework</option>
+                            <option value="Test">Test</option>
+                            <option value="Club">Club</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Event">Event</option>
+                        </select> <br>
+
+                        <a href="javascript:editCategories()" style="font-size: smaller;color: rgba(0,0,0,0.4); text-align: center;">Edit Categories</a>
+
+                        <br><br>
+                        <input class="w3-btn full" style="border-radius: 10px; max-width: max-content;" type="submit" value="Add task"></input>
+                    </form>
                 </div>
 
                 <!-- All notes -->
@@ -96,12 +100,6 @@
                         <p style="text-align: left;">Don't want to create an account? <br>
                         <strong>Add a task</strong> without an account to use your to do list locally.</p>
                     </div>
-                </div>
-
-                <div style="text-align: center;"> 
-                    <a href="https://github.com/benman604">By Benjamin Man</a>
-                     | 
-                    <a href="https://github.com/benman604/To-Do-List">Github</a>
                 </div>
             </div>
 

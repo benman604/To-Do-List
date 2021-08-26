@@ -3,6 +3,7 @@
     height: 100vh;
     width: 20vw;
     left: 0px;
+    top: 10px;
     position: absolute;
 }
 
@@ -56,6 +57,12 @@ input, textarea{
     transition-duration: 0.4s;
     border-radius: 10px;
     position: relative;
+}
+
+.button-small{
+    border-radius: 10px;
+    float: right;
+    margin-right: 10px;
 }
 
 .button:hover{
