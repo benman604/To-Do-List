@@ -79,6 +79,7 @@ function compare2(a, b){
     return 0
 }
 
+// dock to side or top 
 function changeOrientation(e){
     if(e == "left"){
         $("#leftmenu").addClass("left").addClass("w3-cell")
@@ -107,3 +108,14 @@ else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated
 if(localStorage.getItem("orientation") != null){
     changeOrientation(localStorage.getItem("orientation"))
 }
+
+// register service worker
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then(res => console.log("service worker registered"))
+        .catch(err => console.log("service worker not registered", err))
+    })
+  }
+  
